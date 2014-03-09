@@ -4,20 +4,21 @@ import java.awt.Canvas;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
-import org.clueminer.curve.fit.splines.Spline;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Canvas for painting controlled curves into
+ * Canvas for painting curves
  */
 public class CurveCanvas extends Canvas implements Runnable {
 
     private Image offscreen;
-    private Spline curve;
     private MouseEvent mouseEvent;
+    private transient List<CanvasListener> listeners;
 
-    public CurveCanvas(MouseEvent mouseEvent, Spline curve) {
+    public CurveCanvas(MouseEvent mouseEvent) {
+        this.listeners = new LinkedList<>();
         this.mouseEvent = mouseEvent;
-        this.curve = curve;
     }
 
     @Override
@@ -27,12 +28,8 @@ public class CurveCanvas extends Canvas implements Runnable {
         }
         Graphics og = offscreen.getGraphics();
         og.clearRect(0, 0, getSize().width, getSize().height);
-        curve.paint(og);
+        firePaint(og);
         g.drawImage(offscreen, 0, 0, null);
-    }
-
-    public void setSpline(Spline spline) {
-        curve = (ControlCurve) spline;
     }
 
     @Override
@@ -49,21 +46,64 @@ public class CurveCanvas extends Canvas implements Runnable {
         for (;;) {
             Event e = mouseEvent.get();
             if (e.id == Event.MOUSE_DOWN) {
-                if (curve.selectPoint(e.x, e.y) == -1) { /*no point selected add new one*/
+                if (fireSelectPoint(e.x, e.y) == -1) { /*no point selected add new one*/
 
-                    curve.addPoint(e.x, e.y);
+                    fireAddPoint(e.x, e.y);
                     update();
                 }
             } else if (e.id == Event.MOUSE_DRAG) {
-                curve.setPoint(e.x, e.y);
+                fireSetPoint(e.x, e.y);
                 update();
             } else if (e.id == Event.MOUSE_UP) {
                 if (e.shiftDown()) {
-                    curve.removePoint(); //Shift Click removes control points
+                    fireRemovePoint(); //Shift Click removes control points
                     update();
                 }
             }
         }
+    }
+
+    public void addListener(CanvasListener l) {
+        listeners.add(l);
+    }
+
+    public void removeLogListener(CanvasListener l) {
+        listeners.remove(l);
+    }
+
+    private void firePaint(Graphics og) {
+        for (CanvasListener l : listeners) {
+            l.paint(og);
+        }
+    }
+
+    private void fireRemovePoint() {
+        for (CanvasListener l : listeners) {
+            l.removePoint();
+        }
+    }
+
+    private void fireSetPoint(int x, int y) {
+        for (CanvasListener l : listeners) {
+            l.setPoint(x, y);
+        }
+    }
+
+    private void fireAddPoint(int x, int y) {
+        for (CanvasListener l : listeners) {
+            l.addPoint(x, y);
+        }
+    }
+
+    private int fireSelectPoint(int x, int y) {
+        int ret = -1;
+        for (CanvasListener l : listeners) {
+            ret = l.selectPoint(x, y);
+            if (ret > -1) {
+                return ret;
+            }
+        }
+        return ret;
     }
 
 }

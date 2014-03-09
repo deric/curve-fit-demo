@@ -5,8 +5,6 @@ import java.awt.Event;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
-import org.clueminer.curve.fit.splines.Bezier;
-import org.clueminer.curve.fit.splines.Spline;
 
 /**
  * This panel allows users to experiment with splines.
@@ -15,7 +13,6 @@ import org.clueminer.curve.fit.splines.Spline;
  */
 public class SplinePanel extends JPanel {
 
-    protected Spline curve = new Bezier();
     protected Color bgcolor = Color.WHITE;
     protected MouseEvent mouseEvent;
     private Thread canvasThread;
@@ -30,7 +27,7 @@ public class SplinePanel extends JPanel {
         setBackground(bgcolor);
         mouseEvent = new MouseEvent();
 
-        canvas = new CurveCanvas(mouseEvent, curve);
+        canvas = new CurveCanvas(mouseEvent);
 
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1.0;
@@ -42,13 +39,6 @@ public class SplinePanel extends JPanel {
         canvasThread = new Thread(canvas);
         canvasThread.start();
         canvasThread.setPriority(Thread.MIN_PRIORITY);
-    }
-
-    public void setSpline(Spline spline) {
-        if (canvas != null) {
-            this.curve = spline;
-            canvas.setSpline(spline);
-        }
     }
 
     @Override
@@ -64,7 +54,10 @@ public class SplinePanel extends JPanel {
     }
 
     public void clear() {
-        curve.reset();
         canvas.repaint();
+    }
+
+    public void addListener(CanvasListener l) {
+        canvas.addListener(l);
     }
 }

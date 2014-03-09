@@ -54,7 +54,7 @@ public class SplineToolbar extends JPanel implements ActionListener {
             control.clear();
         } else if (source.equals(comboSpline)) {
             String item = (String) comboSpline.getSelectedItem();
-            control.setCurve(providers.get(item));
+            control.setSpline(providers.get(item));
             System.out.println("selected:" + item);
         }
     }
