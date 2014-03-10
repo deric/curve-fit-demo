@@ -10,10 +10,10 @@ import org.clueminer.curve.fit.splines.Spline;
  */
 public class Controller implements CanvasListener {
 
-    private final SplinePanel panel;
+    private final CurvePanel panel;
     protected Spline model = new Bezier();
 
-    public Controller(SplinePanel panel) {
+    public Controller(CurvePanel panel) {
         this.panel = panel;
         init();
     }
@@ -26,7 +26,7 @@ public class Controller implements CanvasListener {
      * Removes all elements form the canvas
      */
     public void clear() {
-        panel.clear();
+        panel.repaint();
         model.reset();
     }
 

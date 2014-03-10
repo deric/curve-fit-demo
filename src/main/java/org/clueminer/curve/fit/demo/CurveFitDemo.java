@@ -8,7 +8,7 @@ import org.openide.util.Exceptions;
 
 public class CurveFitDemo extends JFrame {
 
-    private SplinePanel panel;
+    private CurvePanel panel;
     private SplineToolbar toolbar;
     private Controller control;
 
@@ -39,7 +39,7 @@ public class CurveFitDemo extends JFrame {
 
     private void init() {
         setLayout(new GridBagLayout());
-        panel = new SplinePanel();
+        panel = new CurvePanel();
         control = new Controller(panel);
 
         GridBagConstraints c = new GridBagConstraints();
