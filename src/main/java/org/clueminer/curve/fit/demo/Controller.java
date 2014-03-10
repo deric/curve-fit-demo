@@ -1,7 +1,5 @@
 package org.clueminer.curve.fit.demo;
 
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -65,6 +63,7 @@ public class Controller implements CanvasListener {
 
     public void setSpline(Spline spline) {
         this.model = spline;
+        panel.repaint();
     }
 
     /**
@@ -164,22 +163,38 @@ public class Controller implements CanvasListener {
 
     private void drawLine(Graphics2D g) {
         Polygon pol = new Polygon();
-        double[] xp = Doubles.toArray(Ints.asList(pts.xpoints));
-        double[] yp = Doubles.toArray(Ints.asList(pts.xpoints));
 
-        Point2D.Double[] points = model.curvePoints(xp, yp, STEPS);
-        if (points.length > 0) {
-            System.out.println("len: " + points.length);
-            int i = 0;
-            for (Point2D.Double point : points) {
-                System.out.println((i++) + " point: " + point);
-                if (point != null) {
-                    pol.addPoint(Math.round((float) point.getX()), Math.round((float) point.getY()));
+        if (pts.npoints >= model.minPoints()) {
+            double[] xp = toDoubleArray(pts.xpoints);
+            double[] yp = toDoubleArray(pts.ypoints);
+            int x, y;
+            Point2D.Double[] points = model.curvePoints(xp, yp, pts.npoints, STEPS);
+            if (points.length > 0) {
+                for (Point2D.Double point : points) {
+                    if (point != null) {
+                        x = Math.round((float) point.getX());
+                        y = Math.round((float) point.getY());
+                        pol.addPoint(x, y);
+                    }
                 }
+                g.drawPolyline(pol.xpoints, pol.ypoints, pol.npoints);
             }
-
-            g.drawPolyline(pol.xpoints, pol.ypoints, pol.npoints);
         }
+    }
+
+    /**
+     * Converts integer array to a double array
+     *
+     * @param ary
+
+     * @return
+     */
+    private double[] toDoubleArray(int[] ary) {
+        double[] res = new double[ary.length];
+        for (int i = 0; i < ary.length; i++) {
+            res[i] = ary[i];
+        }
+        return res;
     }
 
     @Override

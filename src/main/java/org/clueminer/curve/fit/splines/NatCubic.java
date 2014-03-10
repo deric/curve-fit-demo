@@ -18,6 +18,11 @@ public class NatCubic implements Spline {
         return name;
     }
 
+    @Override
+    public int minPoints() {
+        return 2;
+    }
+
     /**
      * calculates the natural cubic spline that interpolates y[0], y[1], ...
      * y[n] The first segment is returned as C[0].a + C[0].b*u + C[0].c*u^2 +
@@ -99,9 +104,8 @@ public class NatCubic implements Spline {
      */
 
     @Override
-    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps) {
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int numPts, int steps) {
         Point2D.Double[] curve;
-        int numPts = xpoints.length;
         if (numPts >= 2) {
             Cubic[] X = calcNaturalCubic(numPts - 1, xpoints);
             Cubic[] Y = calcNaturalCubic(numPts - 1, ypoints);

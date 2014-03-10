@@ -1,8 +1,5 @@
 package org.clueminer.curve.fit.splines;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import org.openide.util.lookup.ServiceProvider;
 
@@ -20,6 +17,11 @@ public class BSpline implements Spline {
         return name;
     }
 
+    @Override
+    public int minPoints() {
+        return 3;
+    }
+
     // the basis function for a cubic B spline
     public double b(int i, double t) {
         switch (i) {
@@ -35,11 +37,12 @@ public class BSpline implements Spline {
         return 0; //we only get here if an invalid i is specified
     }
 
-    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps) {
-        int pts = (xpoints.length - 1) * steps;
+    @Override
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int numPts, int steps) {
+        int pts = numPts * steps + 1;
         Point2D.Double[] curve = new Point2D.Double[pts];
         curve[0] = point(2, 0, xpoints, ypoints);
-        for (int i = 2; i < xpoints.length - 1; i++) {
+        for (int i = 2; i < numPts; i++) {
             for (int j = 1; j <= steps; j++) {
                 curve[j] = point(i, j / (double) steps, xpoints, ypoints);
             }

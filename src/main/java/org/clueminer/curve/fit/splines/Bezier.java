@@ -18,6 +18,12 @@ public class Bezier implements Spline {
         return name;
     }
 
+    @Override
+    public int minPoints() {
+        return 3;
+    }
+
+
     /**
      * The basis function for a Bezier spline
      *
@@ -60,11 +66,11 @@ public class Bezier implements Spline {
     }
 
     @Override
-    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps) {
-        int pts = (xpoints.length - 1) * steps / 3 + 1;
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int numPts, int steps) {
+        int pts = numPts * steps / 3 + 1;
         Point2D.Double[] curve = new Point2D.Double[pts];
         curve[0] = point(0, 0, xpoints, ypoints);
-        for (int i = 0; i < xpoints.length - 3; i += 3) {
+        for (int i = 0; i < numPts - 3; i += 3) {
             for (int j = 1; j <= steps; j++) {
                 curve[j] = point(i, j / (double) steps, xpoints, ypoints);
             }

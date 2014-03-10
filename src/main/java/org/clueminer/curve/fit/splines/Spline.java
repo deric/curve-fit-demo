@@ -11,6 +11,13 @@ public interface Spline {
     public String getName();
 
     /**
+     * Minimum number of point in order to render a curve
+     *
+     * @return
+     */
+    public int minPoints();
+
+    /**
      * Compute position of ith point from arrays of X and Y coordinates
      *
      * @param i
@@ -25,9 +32,10 @@ public interface Spline {
      *
      * @param xpoints
      * @param ypoints
+     * @param numPts
      * @param steps
      * @return
      */
-    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps);
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int numPts, int steps);
 
 }

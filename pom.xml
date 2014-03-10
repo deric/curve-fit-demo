@@ -54,10 +54,5 @@
             <artifactId>org-openide-util</artifactId>
             <version>RELEASE74</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>16.0.1</version>
-        </dependency>
     </dependencies>
 </project>
