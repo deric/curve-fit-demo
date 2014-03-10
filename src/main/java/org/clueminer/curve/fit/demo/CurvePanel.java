@@ -2,6 +2,7 @@ package org.clueminer.curve.fit.demo;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -38,7 +39,7 @@ public class CurvePanel extends JPanel implements MouseListener, MouseMotionList
         if (offscreen == null) {
             offscreen = createImage(getSize().width, getSize().height);
         }
-        Graphics og = offscreen.getGraphics();
+        Graphics2D og = (Graphics2D) offscreen.getGraphics();
         og.clearRect(0, 0, getSize().width, getSize().height);
         firePaint(og);
         g.drawImage(offscreen, 0, 0, null);
@@ -61,7 +62,7 @@ public class CurvePanel extends JPanel implements MouseListener, MouseMotionList
         listeners.remove(l);
     }
 
-    private void firePaint(Graphics og) {
+    private void firePaint(Graphics2D og) {
         for (CanvasListener l : listeners) {
             l.paint(og);
         }
@@ -88,7 +89,7 @@ public class CurvePanel extends JPanel implements MouseListener, MouseMotionList
     private int fireSelectPoint(int x, int y) {
         int ret = -1;
         for (CanvasListener l : listeners) {
-            ret = l.selectPoint(x, y);
+            ret = l.findPoint(x, y);
             if (ret > -1) {
                 return ret;
             }

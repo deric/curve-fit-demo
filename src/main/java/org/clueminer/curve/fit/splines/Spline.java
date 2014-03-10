@@ -1,6 +1,6 @@
 package org.clueminer.curve.fit.splines;
 
-import java.awt.Graphics;
+import java.awt.geom.Point2D;
 
 /**
  *
@@ -11,34 +11,23 @@ public interface Spline {
     public String getName();
 
     /**
-     * add a control point, return index of new control point
+     * Compute position of ith point from arrays of X and Y coordinates
      *
-     * @param x
-     * @param y
-     * @return index of added point
-     */
-    public int addPoint(int x, int y);
-
-    public void reset();
-
-    /**
-     * return index of control point near to (x,y) or -1 if nothing near
-     *
-     * @param x
-     * @param y
+     * @param i
+     * @param t
+     * @param xpoints
+     * @param ypoints
      * @return
      */
-    public int selectPoint(int x, int y);
+    public Point2D.Double point(int i, double t, double[] xpoints, double[] ypoints);
 
     /**
-     * paint this curve into g.
      *
-     * @param g
+     * @param xpoints
+     * @param ypoints
+     * @param steps
+     * @return
      */
-    public void paint(Graphics g);
-
-    public void setPoint(int x, int y);
-
-    public void removePoint();
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps);
 
 }

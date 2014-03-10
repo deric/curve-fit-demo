@@ -28,8 +28,7 @@ public class BezierG1 extends Bezier {
     int deltay;
 
     /* adjust positions of points so that points are collinear */
-    void forceCollinear(int i) {
-        if (i % 3 == 0 && i < pts.npoints - 1 && i > 0) { //interpolating control point
+    /*    void forceCollinear(int i) {        if (i % 3 == 0 && i < pts.npoints - 1 && i > 0) { //interpolating control point
             pts.xpoints[i - 1] += deltax;  //adjust neighbours
             pts.ypoints[i - 1] += deltay;  // by the same amount
             pts.xpoints[i + 1] += deltax;  // that this one has changed
@@ -39,11 +38,10 @@ public class BezierG1 extends Bezier {
         } else if (i % 3 == 2 && i < pts.npoints - 2) {
             forceCollinear(i, i + 1, i + 2);
         }
-    }
+    }*/
 
     /* move k such that it is collinear with i and j */
-    void forceCollinear(int i, int j, int k) {
-        float ij = distance(pts.xpoints[i], pts.ypoints[i], pts.xpoints[j], pts.ypoints[j]);
+    /*    void forceCollinear(int i, int j, int k) {        float ij = distance(pts.xpoints[i], pts.ypoints[i], pts.xpoints[j], pts.ypoints[j]);
         float jk = distance(pts.xpoints[j], pts.ypoints[j], pts.xpoints[k], pts.ypoints[k]);
         float r = jk / ij;
         pts.xpoints[k] = Math.round(pts.xpoints[j] + r * (pts.xpoints[j] - pts.xpoints[i]));
@@ -53,21 +51,19 @@ public class BezierG1 extends Bezier {
     float distance(int x1, int y1, int x2, int y2) {
         return (float) Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
-
+*/
     /**
      * add a control point, return index of new control point
      */
-    public int addPoint(int x, int y) {
-        int i = super.addPoint(x, y);
+    /*public int addPoint(int x, int y) {        int i = super.addPoint(x, y);
         forceCollinear(i);
         return i;
-    }
+    }*/
 
     /**
      * set selected control point
      */
-    public void setPoint(int x, int y) {
-        deltax = x - pts.xpoints[selection]; //save previous value
+    /*  public void setPoint(int x, int y) {        deltax = x - pts.xpoints[selection]; //save previous value
         deltay = y - pts.ypoints[selection]; //save previous value
         super.setPoint(x, y);
         forceCollinear(selection);
@@ -76,11 +72,11 @@ public class BezierG1 extends Bezier {
     /**
      * remove selected control point
      */
-    public void removePoint() {
+/*   public void removePoint() {
         super.removePoint();
         for (int i = 4; i < pts.npoints; i += 3) {
             forceCollinear(i);
         }
     }
-
+*/
 }

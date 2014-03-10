@@ -3,7 +3,7 @@ package org.clueminer.curve.fit.splines;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
-import org.clueminer.curve.fit.demo.ControlCurve;
+import java.awt.geom.Point2D;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -11,9 +11,7 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Tim Lambert
  */
 @ServiceProvider(service = Spline.class)
-public class BSpline extends ControlCurve {
-
-    private final int STEPS = 12;
+public class BSpline implements Spline {
 
     private static final String name = "BSpline";
 
@@ -23,7 +21,7 @@ public class BSpline extends ControlCurve {
     }
 
     // the basis function for a cubic B spline
-    public float b(int i, float t) {
+    public double b(int i, double t) {
         switch (i) {
             case -2:
                 return (((-t + 3) * t - 3) * t + 1) / 6;
@@ -37,30 +35,36 @@ public class BSpline extends ControlCurve {
         return 0; //we only get here if an invalid i is specified
     }
 
-    //evaluate a point on the B spline
-    public Point p(int i, float t) {
-        float px = 0;
-        float py = 0;
-        for (int j = -2; j <= 1; j++) {
-            px += b(j, t) * pts.xpoints[i + j];
-            py += b(j, t) * pts.ypoints[i + j];
-        }
-        return new Point((int) Math.round(px), (int) Math.round(py));
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Polygon pol = new Polygon();
-        Point q = p(2, 0);
-        pol.addPoint(q.x, q.y);
-        for (int i = 2; i < pts.npoints - 1; i++) {
-            for (int j = 1; j <= STEPS; j++) {
-                q = p(i, j / (float) STEPS);
-                pol.addPoint(q.x, q.y);
+    public Point2D.Double[] curvePoints(double[] xpoints, double[] ypoints, int steps) {
+        int pts = (xpoints.length - 1) * steps;
+        Point2D.Double[] curve = new Point2D.Double[pts];
+        curve[0] = point(2, 0, xpoints, ypoints);
+        for (int i = 2; i < xpoints.length - 1; i++) {
+            for (int j = 1; j <= steps; j++) {
+                curve[j] = point(i, j / (double) steps, xpoints, ypoints);
             }
         }
-        g.drawPolyline(pol.xpoints, pol.ypoints, pol.npoints);
+        return curve;
+    }
+
+    /**
+     * Evaluate an ith point on the B spline
+     *
+     * @param i
+     * @param t
+     * @param xpoints
+     * @param ypoints
+     * @return
+     */
+    @Override
+    public Point2D.Double point(int i, double t, double[] xpoints, double[] ypoints) {
+        double px = 0;
+        double py = 0;
+        for (int j = -2; j <= 1; j++) {
+            px += b(j, t) * xpoints[i + j];
+            py += b(j, t) * ypoints[i + j];
+        }
+        return new Point2D.Double(px, py);
     }
 
 }

@@ -27,12 +27,12 @@ public class NatCubicClosed extends NatCubic {
      * @return
      */
     @Override
-    public Cubic[] calcNaturalCubic(int n, int[] x) {
-        float[] w = new float[n + 1];
-        float[] v = new float[n + 1];
-        float[] y = new float[n + 1];
-        float[] D = new float[n + 1];
-        float z, F, G, H;
+    public Cubic[] calcNaturalCubic(int n, double[] x) {
+        double[] w = new double[n + 1];
+        double[] v = new double[n + 1];
+        double[] y = new double[n + 1];
+        double[] D = new double[n + 1];
+        double z, F, G, H;
         int k;
         /* We solve the equation
          [4 1      1] [D[0]]   [3(x[1] - x[n])  ]
@@ -73,11 +73,9 @@ public class NatCubicClosed extends NatCubic {
         /* now compute the coefficients of the cubics */
         Cubic[] C = new Cubic[n + 1];
         for (k = 0; k < n; k++) {
-            C[k] = new Cubic((float) x[k], D[k], 3 * (x[k + 1] - x[k]) - 2 * D[k] - D[k + 1],
-                             2 * (x[k] - x[k + 1]) + D[k] + D[k + 1]);
+            C[k] = new Cubic((double) x[k], D[k], 3 * (x[k + 1] - x[k]) - 2 * D[k] - D[k + 1], 2 * (x[k] - x[k + 1]) + D[k] + D[k + 1]);
         }
-        C[n] = new Cubic((float) x[n], D[n], 3 * (x[0] - x[n]) - 2 * D[n] - D[0],
-                         2 * (x[n] - x[0]) + D[n] + D[0]);
+        C[n] = new Cubic((double) x[n], D[n], 3 * (x[0] - x[n]) - 2 * D[n] - D[0], 2 * (x[n] - x[0]) + D[n] + D[0]);
         return C;
     }
 

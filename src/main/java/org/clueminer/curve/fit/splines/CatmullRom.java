@@ -24,7 +24,7 @@ public class CatmullRom extends BSpline {
      * @return
      */
     @Override
-    public float b(int i, float t) {
+    public double b(int i, double t) {
         switch (i) {
             case -2:
                 return ((-t + 2) * t - 1) * t / 2;

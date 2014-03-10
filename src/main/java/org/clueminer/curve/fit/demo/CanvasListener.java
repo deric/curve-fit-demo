@@ -1,6 +1,6 @@
 package org.clueminer.curve.fit.demo;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  *
@@ -13,11 +13,25 @@ public interface CanvasListener {
      *
      * @param g
      */
-    public void paint(Graphics g);
+    public void paint(Graphics2D g);
 
-    public int selectPoint(int x, int y);
+    /**
+     * Find point near or at given coordinates
+     *
+     * @param x
+     * @param y
+     * @return -1 if no point was found
+     */
+    public int findPoint(int x, int y);
 
-    public void addPoint(int x, int y);
+    /**
+     * Add point and return its index
+     *
+     * @param x
+     * @param y
+     * @return index new point
+     */
+    public int addPoint(int x, int y);
 
     public void setPoint(int x, int y);
 

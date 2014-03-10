@@ -8,10 +8,10 @@ package org.clueminer.curve.fit.splines;
  */
 public class Cubic {
 
-    float a, b, c, d;         /* a + b*u + c*u^2 +d*u^3 */
+    double a, b, c, d;         /* a + b*u + c*u^2 +d*u^3 */
 
 
-    public Cubic(float a, float b, float c, float d) {
+    public Cubic(double a, double b, double c, double d) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -24,7 +24,7 @@ public class Cubic {
      * @param u
      * @return
      */
-    public float eval(float u) {
+    public double eval(double u) {
         return (((d * u) + c) * u + b) * u + a;
     }
 }

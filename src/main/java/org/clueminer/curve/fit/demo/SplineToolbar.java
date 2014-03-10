@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -33,7 +32,6 @@ public class SplineToolbar extends JPanel implements ActionListener {
     }
 
     private void init() {
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         toolbar = new JToolBar(SwingConstants.HORIZONTAL);
         JLabel label = new JLabel("Spline/Interpolator: ");
         toolbar.add(label);
